@@ -15,8 +15,20 @@ const ButtonType = React.lazy(() => import("../UpscComponent/ButtonType"));
 
 const FIleType = React.lazy(() => import("../UpscComponent/FIleType"));
 function UPSCName({ allData, fields, setSubmitted }) {
-  useEffect(() => {
-    hotjar.initialize(3503164, 6);
+   useEffect(() => {
+    const initializeHotjar = () => {
+      hotjar.initialize(3503164, 6);
+    };
+
+    const lazyLoad = () => {
+      if (window.requestIdleCallback) {
+        window.requestIdleCallback(initializeHotjar);
+      } else {
+        setTimeout(initializeHotjar, 0);
+      }
+    };
+
+    lazyLoad();
   }, []);
   const formFieldsRef = useRef({});
   let [dataFilled, setDataFilled] = useState({});
